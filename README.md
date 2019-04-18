@@ -1,4 +1,4 @@
-# Ansible role : Ansible
+# Ansible role : Pip
 
 ![](https://img.shields.io/github/release/Pandemonium1986/ansible-role-pip.svg)
 ![](https://img.shields.io/github/repo-size/Pandemonium1986/ansible-role-pip.svg)
@@ -12,13 +12,6 @@ Install and configure pip, from get-pip.py
 This roles is self contained and install pip for debian, ubuntu, centos.
 
 ## Role Variables
-
-From defaults/main.yml :
-
-```yaml
-ansible_users:
-  - pandemonium
-```
 
 From vars/main.yml (depends of distribution):
 
