@@ -1,0 +1,18 @@
+---
+galaxy_info:
+  role_name:           pip
+  author:              Michael Maffait
+  description:         Install and configure pip, from get-pip.py
+  # company:           your company (optional)
+  license:             MIT
+  min_ansible_version: 2.7
+  github_branch:       master
+  platforms:
+    - name:            Debian
+      versions:        ['stretch']
+    - name:            EL
+      versions:        ['7']
+    - name:            Ubuntu
+      versions:        ['bionic']
+  galaxy_tags:         ['automation', 'ansible', 'system']
+dependencies:          []
