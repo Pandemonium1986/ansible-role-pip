@@ -12,37 +12,41 @@
     name:                    "{{ _packages }}"
     state:                   present
 
-- name:                      Da fuckgin python {{ ansible_distribution }}
+- name:                      Set python version (Ubuntu)
   set_fact:
      ansible_install_python: python3
   when:                      ansible_distribution  == 'Ubuntu'
 
-- name:                      Da fuckgin python {{ ansible_distribution }}
+- name:                      Set python version (Redhat/Debian)
   set_fact:
      ansible_install_python: python
   when:                      (ansible_distribution == 'Debian')or (ansible_os_family == 'RedHat')
 
-- name:                      Download and install  pip
+- name:                      Download and install pip
   block:
-    - file:
+    - name:                  Ensure .cache directory exists
+      file:
         path:                /root/.cache
         state:               directory
         mode:                0700
-    - get_url:
+    - name:                  Download get_pip.py
+      get_url:
         url:                 https://bootstrap.pypa.io/get-pip.py
         dest:                /root/.cache/get-pip.py
         mode:                0600
-    - command:               "{{ ansible_install_python }} get-pip.py"
+    - name:                  Run get-pip.py
+      command:               "{{ ansible_install_python }} get-pip.py"
       args:
         chdir:               /root/.cache
         creates:             /root/.cache/pip_install_done
       register:              get_pip_result
     # - debug:
     #     var:               get_pip_result
-    - file:
+    - name:                  Ensure pip installation is done
+      file:
         path:                /root/.cache/pip_install_done
         state:               touch
         mode:                0700
-      when:                  get_pip_result.changed == true
+      when:                  get_pip_result.changed
   become:                    true
   become_user:               root
