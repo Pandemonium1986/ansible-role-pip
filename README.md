@@ -9,7 +9,7 @@ Install and configure pip, from get-pip.py
 
 ## Requirements
 
-This roles is self contained and install pip for debian, ubuntu, centos.
+This role is self contained and install pip for debian, ubuntu, centos.
 
 ## Role Variables
 
@@ -27,14 +27,14 @@ None.
 ## Example Playbook
 
 ```yaml
-- name :         Pip installation
+- name :         Pip play
   hosts :        pandama
   become:        true
   become_method: sudo
   become_user:   root
   tasks:
     - import_role:
-        name:    pandemonium1986.ansible
+        name:    pandemonium1986.pip
 ```
 
 ## License
