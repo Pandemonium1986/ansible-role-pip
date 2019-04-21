@@ -9,7 +9,7 @@ Install and configure pip, from get-pip.py
 
 ## Requirements
 
-This role is self contained and install pip for debian, ubuntu, centos.
+This role is self contained and install pip for debian, ubuntu, linux mint, centos.
 
 ## Role Variables
 

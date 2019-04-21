@@ -15,7 +15,7 @@
 - name:                      Set python version (Ubuntu)
   set_fact:
      ansible_install_python: python3
-  when:                      ansible_distribution  == 'Ubuntu'
+  when:                      (ansible_distribution  == 'Ubuntu') or (ansible_distribution  == 'Linux Mint')
 
 - name:                      Set python version (Redhat/Debian)
   set_fact:
