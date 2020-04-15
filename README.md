@@ -1,9 +1,10 @@
 # Ansible role : Pip
 
-![](https://img.shields.io/github/release/Pandemonium1986/ansible-role-pip.svg)
-![](https://img.shields.io/github/repo-size/Pandemonium1986/ansible-role-pip.svg)
-![](https://img.shields.io/github/release-date/Pandemonium1986/ansible-role-pip.svg)
-![](https://img.shields.io/github/license/Pandemonium1986/ansible-role-pip.svg)
+![Ansible Role](https://img.shields.io/ansible/role/39723?logo=ansible)
+![Gitlab pipeline status](https://img.shields.io/gitlab/pipeline/Pandemonium1986/ansible-role-pip?logo=gitlab)
+![GitHub release](https://img.shields.io/github/release/Pandemonium1986/ansible-role-pip.svg?logo=github)
+![Github license](https://img.shields.io/github/license/Pandemonium1986/ansible-role-pip.svg?logo=github)
+![Ansible Quality Score](https://img.shields.io/ansible/quality/39723?logo=ansible)
 
 Install and configure pip, from get-pip.py
 
