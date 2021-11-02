@@ -7,43 +7,43 @@
 - name:                          Include Family specific variables
   ansible.builtin.include_vars:  "{{ ansible_os_family }}-Family.yml"
 
-- name:                          Include OS-specific tasks
+- name:                          Include Family specific tasks
   ansible.builtin.include_tasks: setup-{{ ansible_os_family }}.yml
 
-- name:                     Install packages
-  package:
-    name:                   "{{ _packages }}"
-    state:                  present
-
-- name:                     Force python version to python3
+- name:                          Force python version to python3
   set_fact:
-    ansible_install_python: python3
+    ansible_install_python:      python3
 
-- name:                     Download and install pip
+- name:                          Install packages
+  package:
+    name:                        "{{ _packages }}"
+    state:                       present
+
+- name:                          Download and install pip
   block:
-    - name:                 Ensure .cache directory exists
+    - name:                      Ensure .cache directory exists
       file:
-        path:               /root/.cache
-        state:              directory
-        mode:               0700
-    - name:                 Download get_pip.py
+        path:                    /root/.cache
+        state:                   directory
+        mode:                    0700
+    - name:                      Download get_pip.py
       get_url:
-        url:                https://bootstrap.pypa.io/get-pip.py
-        dest:               /root/.cache/get-pip.py
-        mode:               0600
-    - name:                 Run get-pip.py
-      command:              "{{ ansible_install_python }} get-pip.py"
+        url:                     https://bootstrap.pypa.io/get-pip.py
+        dest:                    /root/.cache/get-pip.py
+        mode:                    0600
+    - name:                      Run get-pip.py
+      command:                   "{{ ansible_install_python }} get-pip.py"
       args:
-        chdir:              /root/.cache
-        creates:            /root/.cache/pip_install_done
-      register:             get_pip_result
+        chdir:                   /root/.cache
+        creates:                 /root/.cache/pip_install_done
+      register:                  get_pip_result
     # - debug:
-    #     var:              get_pip_result
-    - name:                 Ensure pip installation is done
+    #     var:                   get_pip_result
+    - name:                      Ensure pip installation is done
       file:
-        path:               /root/.cache/pip_install_done
-        state:              touch
-        mode:               0700
-      when:                 get_pip_result.changed
-  become:                   true
-  become_user:              root
+        path:                    /root/.cache/pip_install_done
+        state:                   touch
+        mode:                    0700
+      when:                      get_pip_result.changed
+  become:                        true
+  become_user:                   root
