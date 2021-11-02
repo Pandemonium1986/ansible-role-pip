@@ -15,9 +15,9 @@
     name:                   "{{ _packages }}"
     state:                  present
 
-# - name:                     Set python version (Ubuntu)
-#   set_fact:
-#     ansible_install_python: python3
+- name:                     Force python version to python3
+  set_fact:
+    ansible_install_python: python3
 
 - name:                     Download and install pip
   block:
