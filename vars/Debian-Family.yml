@@ -1,3 +1,4 @@
 ---
 _packages:
   - python3-dev
+  - sudo

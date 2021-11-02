@@ -1,31 +1,23 @@
 ---
-- name:                     Include OS-specific variables (Debian).
-  include_vars:             "{{ ansible_distribution }}-{{ ansible_distribution_version.split('.')[0] }}.yml"
-  when:                     ansible_os_family == 'Debian'
+- name:                          Configure Mint Fact
+  ansible.builtin.set_fact:
+    ansible_distribution:        "Mint"
+  when:                          ansible_distribution == 'Linux Mint'
 
-- name:                     Include OS-specific variables (RedHat).
-  include_vars:             "{{ ansible_distribution }}-{{ ansible_distribution_version.split('.')[0] }}.yml"
-  when:                     ansible_os_family == 'RedHat'
+- name:                          Include Family specific variables
+  ansible.builtin.include_vars:  "{{ ansible_os_family }}-Family.yml"
+
+- name:                          Include OS-specific tasks
+  ansible.builtin.include_tasks: setup-{{ ansible_os_family }}.yml
 
 - name:                     Install packages
   package:
     name:                   "{{ _packages }}"
     state:                  present
 
-- name:                     Set python version (Ubuntu)
-  set_fact:
-    ansible_install_python: python3
-  when:                     (ansible_distribution  == 'Ubuntu') or (ansible_distribution  == 'Linux Mint')
-
-- name:                     Set python version (Redhat/Debian)
-  set_fact:
-    ansible_install_python: python
-  when:                     (ansible_distribution == 'Debian') or (ansible_os_family == 'RedHat')
-
-- name:                     Set python version (Centos 8)
-  set_fact:
-    ansible_install_python: python3
-  when:                     (ansible_os_family == 'RedHat') and (ansible_distribution_version.split('.')[0] == "8")
+# - name:                     Set python version (Ubuntu)
+#   set_fact:
+#     ansible_install_python: python3
 
 - name:                     Download and install pip
   block:
