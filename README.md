@@ -1,7 +1,7 @@
 # Ansible role : Pip
 
 ![Ansible Role](https://img.shields.io/ansible/role/39723?logo=ansible)
-![Gitlab pipeline status](https://img.shields.io/gitlab/pipeline/Pandemonium1986/ansible-role-pip?logo=gitlab)
+[![Molecule](https://github.com/Pandemonium1986/ansible-role-pip/actions/workflows/molecule.yml/badge.svg?branch=master)](https://github.com/Pandemonium1986/ansible-role-pip/actions/workflows/molecule.yml)
 ![GitHub release](https://img.shields.io/github/release/Pandemonium1986/ansible-role-pip.svg?logo=github)
 ![Github license](https://img.shields.io/github/license/Pandemonium1986/ansible-role-pip.svg?logo=github)
 ![Ansible Quality Score](https://img.shields.io/ansible/quality/39723?logo=ansible)
