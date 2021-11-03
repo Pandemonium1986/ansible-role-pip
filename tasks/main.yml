@@ -31,7 +31,7 @@
 
 - name:                          Force python version to python3
   set_fact:
-    ansible_install_python:      python3
+    ansible_python_interpreter:  python3
 
 - name:                          Installation of prerequisite packages
   package:
@@ -63,7 +63,7 @@
         dest:                    /root/.cache/get-pip.py
         mode:                    0600
     - name:                      Run get-pip.py
-      command:                   "{{ ansible_install_python }} get-pip.py"
+      command:                   "{{ ansible_python_interpreter }} get-pip.py"
       args:
         chdir:                   /root/.cache
         creates:                 /root/.cache/pip_install_done
