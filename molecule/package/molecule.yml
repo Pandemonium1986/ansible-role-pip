@@ -1,10 +1,10 @@
 ---
 dependency:
-  name:               galaxy
-  enabled:            false
+  name:                      galaxy
+  enabled:                   false
 driver:
-  name:               docker
-lint:                 |
+  name:                      docker
+lint:                        |
   set -e
   yamllint .
   ansible-lint
@@ -21,6 +21,9 @@ platforms:
     privileged:              true
 provisioner:
   name:                      ansible
+  playbooks:
+    verify:                  ../resources/verify.yml
+    prepare:                 ../resources/prepare.yml
   lint:                      |
     set -e
     ansible-lint
@@ -29,7 +32,7 @@ provisioner:
       stdout_callback:       yaml
       bin_ansible_callbacks: true
 scenario:
-  name:                      default
+  name:                      package
 verifier:
   name:                      ansible
   enabled:                   true

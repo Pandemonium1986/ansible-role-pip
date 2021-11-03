@@ -1,5 +1,5 @@
 ---
-name:                      "Molecule"
+name:                          "Molecule"
 on:
   schedule:
     - cron:                    "0 21 * * *"
@@ -39,6 +39,9 @@ jobs:
           - "mint20"
           - "ubuntu1804"
           - "ubuntu2004"
+        scenario
+          - "package"
+          - "getpip"
     container:
         image:                 ghcr.io/pandemonium1986/alpine313:nightly
         volumes:
@@ -47,7 +50,7 @@ jobs:
         env:
           ANSIBLE_FORCE_COLOR: "1"
           PY_COLORS:           "1"
-          DKR_IMAGE:  ${{ matrix.images }}
+          DKR_IMAGE:           ${{ matrix.images }}
         options:               >-
           --workdir /opt/workspace/${{ github.repository }}
     needs:
@@ -56,12 +59,12 @@ jobs:
       - name:                  "Init: Run checkout@v2"
         uses:                  actions/checkout@v2
       - name:                  "Molecule: Create"
-        run:                   molecule create
+        run:                   molecule create --scenario-name ${{ matrix.scenario }}
       - name:                  "Molecule: Converge"
-        run:                   molecule converge
+        run:                   molecule converge --scenario-name ${{ matrix.scenario }}
       - name:                  "Molecule: Idempotence"
-        run:                   molecule idempotence
+        run:                   molecule idempotence --scenario-name ${{ matrix.scenario }}
       - name:                  "Molecule: Verify"
-        run:                   molecule verify
+        run:                   molecule verify --scenario-name ${{ matrix.scenario }}
       - name:                  "Molecule: Destroy"
-        run:                   molecule destroy
+        run:                   molecule destroy --scenario-name ${{ matrix.scenario }}

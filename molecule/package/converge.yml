@@ -1,0 +1,9 @@
+---
+- name:                 Converge
+  hosts:                all
+  vars:
+    pip_install_method: package
+  tasks:
+    - name:             "Include ansible-role-pip"
+      include_role:
+        name:           "ansible-role-pip"
