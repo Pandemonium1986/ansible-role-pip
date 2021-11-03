@@ -39,7 +39,7 @@ jobs:
           - "mint20"
           - "ubuntu1804"
           - "ubuntu2004"
-        scenario
+        scenario:
           - "package"
           - "getpip"
     container:
