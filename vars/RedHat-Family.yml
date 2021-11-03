@@ -3,4 +3,10 @@ _packages:
   - python3-devel
   - sudo
 
-_package_pip: python3-pip
+_package_pip:             python3-pip
+
+_pip_executable:          pip3
+
+_pip_mandatory_packages:
+  - setuptools
+  - wheel
