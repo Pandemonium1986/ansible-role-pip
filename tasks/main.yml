@@ -9,6 +9,12 @@
     ansible_distribution:        "Mint"
   when:                          ansible_distribution == 'Linux Mint'
 
+- name:                          Include Family specific variables
+  ansible.builtin.include_vars:  "{{ ansible_os_family }}-Family.yml"
+
+- name:                          Include Family specific tasks
+  ansible.builtin.include_tasks: setup-{{ ansible_os_family }}.yml
+
 - name:                          Configure pip path with package installation
   ansible.builtin.set_fact:
     _pip_executable:             "/usr/bin/{{ _pip_executable }}"
@@ -18,12 +24,6 @@
   ansible.builtin.set_fact:
     _pip_executable:             "/usr/local/bin/{{ _pip_executable }}"
   when:                          pip_install_method == 'get-pip'
-
-- name:                          Include Family specific variables
-  ansible.builtin.include_vars:  "{{ ansible_os_family }}-Family.yml"
-
-- name:                          Include Family specific tasks
-  ansible.builtin.include_tasks: setup-{{ ansible_os_family }}.yml
 
 - name:                          Generate pip_packages list
   ansible.builtin.set_fact:
