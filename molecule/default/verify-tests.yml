@@ -1,0 +1,19 @@
+---
+- name:          Run of each application # noqa 301
+  command:
+    cmd:         "{{ item }}"
+  register:      apps_res
+  ignore_errors: true
+  loop:
+    - "whoami"
+    - "python3 -m pip --version"
+    - "which pip3"
+    - "which pip"
+- name:          Ensure app is installed and running
+  assert:
+    that:
+      - item.rc == 0
+    quiet:       true
+    fail_msg:    "{{ item.cmd }} does not seem to be available"
+    success_msg: "{{ item.cmd }} is available"
+  loop:          "{{ apps_res.results }}"

@@ -1,0 +1,13 @@
+---
+- name:                           Verify
+  hosts:                          all
+  gather_facts:                   true
+  tasks:
+  - name:                         Run pip as a non-privileged user
+    ansible.builtin.import_tasks: verify-tests.yml
+    become:                       true
+    become_user:                  pandemonium
+  - name:                         Run pip as a privileged user
+    ansible.builtin.import_tasks: verify-tests.yml
+    become:                       true
+    become_user:                  root
