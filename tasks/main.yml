@@ -1,4 +1,9 @@
 ---
+- name:                          import assert.yml
+  ansible.builtin.import_tasks:  assert.yml
+  run_once:                      true
+  delegate_to:                   localhost
+
 - name:                          Configure Mint Fact
   ansible.builtin.set_fact:
     ansible_distribution:        "Mint"
@@ -14,13 +19,23 @@
   set_fact:
     ansible_install_python:      python3
 
-- name:                          Install packages
+- name:                          Installation of prerequisite packages
   package:
     name:                        "{{ _packages }}"
     state:                       present
 
-- name:                          Download and install pip
+- name:                          Installing pip with the package manager
+  package:
+    name:                        "{{ _package_pip }}"
+    state:                       present
+  when:                          pip_install_method == 'package'
+
+- name:                          Installing pip with the get-pip
   block:
+    - name:                      "Ensure {{ _package_pip }} is absent"
+      package:
+        name:                    "{{ _package_pip }}"
+        state:                   absent
     - name:                      Ensure .cache directory exists
       file:
         path:                    /root/.cache
@@ -47,3 +62,4 @@
       when:                      get_pip_result.changed
   become:                        true
   become_user:                   root
+  when:                          pip_install_method == 'get-pip'

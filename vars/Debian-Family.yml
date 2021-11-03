@@ -2,3 +2,5 @@
 _packages:
   - python3-dev
   - sudo
+
+_package_pip: python3-pip
