@@ -73,5 +73,6 @@
     name:                        "{{ pip_packages }}"
     state:                       present
     executable:                  "{{ _pip_executable }}"
+    extra_args:                  "{{ pip_extra_args | default(omit) }}"
   become:                        true
   become_user:                   "{{ pip_user }}"
