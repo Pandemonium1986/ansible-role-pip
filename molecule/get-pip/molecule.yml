@@ -32,7 +32,7 @@ provisioner:
       stdout_callback:       yaml
       bin_ansible_callbacks: true
 scenario:
-  name:                      getpip
+  name:                      get-pip
 verifier:
   name:                      ansible
   enabled:                   true
