@@ -7,7 +7,6 @@
   loop:
     - "whoami"
     - "python3 -m pip --version"
-    - "python3 -m wheel version"
 - name:          Ensure app is installed and running
   assert:
     that:
