@@ -5,7 +5,7 @@ _packages:
 
 _package_pip:             python3-pip
 
-_pip_executable:          /usr/local/bin/pip3
+_pip_executable:          pip3
 
 _pip_mandatory_packages:
   - setuptools

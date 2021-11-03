@@ -41,7 +41,7 @@ jobs:
           - "ubuntu2004"
         scenario:
           - "package"
-          - "getpip"
+          - "get-pip"
     container:
         image:                 ghcr.io/pandemonium1986/alpine313:nightly
         volumes:
