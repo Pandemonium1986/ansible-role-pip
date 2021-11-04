@@ -1,5 +1,5 @@
 ---
-- name:                   Test if pip_install_method
+- name:                   Test pip_install_method
   ansible.builtin.assert:
     that:
       - pip_install_method is defined
@@ -8,7 +8,7 @@
     quiet:                true
     fail_msg:             "Error pip_install_method MUST be one of this value 'package', 'get-pip'"
 
-- name:                   Test if pip_packages
+- name:                   Test pip_packages
   ansible.builtin.assert:
     that:
       - pip_packages is defined
@@ -18,7 +18,7 @@
     quiet:                true
     fail_msg:             "Error pip_packages MUST be a list of string"
 
-- name:                   Test if pip_user
+- name:                   Test pip_user
   ansible.builtin.assert:
     that:
       - pip_user is defined

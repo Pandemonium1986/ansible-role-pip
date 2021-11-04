@@ -1,0 +1,30 @@
+---
+- name:                         Configure Mint Fact
+  ansible.builtin.set_fact:
+    ansible_distribution:       "Mint"
+  when:                         ansible_distribution == 'Linux Mint'
+
+- name:                         Configure pip path with package installation
+  ansible.builtin.set_fact:
+    _pip_executable:            "/usr/bin/{{ _pip_executable }}"
+  when:                         pip_install_method == 'package'
+
+- name:                         Configure pip path with get-pip installation
+  ansible.builtin.set_fact:
+    _pip_executable:            "/usr/local/bin/{{ _pip_executable }}"
+  when:                         pip_install_method == 'get-pip'
+
+- name:                         Generate pip_packages list
+  ansible.builtin.set_fact:
+    pip_packages:               "{{ _pip_mandatory_packages + pip_packages  }}"
+
+- name:                         Force python interpreter to python3
+  ansible.builtin.set_fact:
+    ansible_python_interpreter: "{{ _python_executable }}"
+
+- name:                         Force python interpreter to python
+  ansible.builtin.set_fact:
+    ansible_python_interpreter: python
+  when:
+    - ansible_distribution == 'CentOS'
+    - ansible_distribution_version.split('.')[0] == '7'
