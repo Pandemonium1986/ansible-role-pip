@@ -23,8 +23,8 @@ jobs:
         uses:                  ansible/ansible-lint-action@master
         with:
           targets:             "./"
-  molecule:
-    name:                      "Molecule: Test"
+  molecule-all:
+    name:                      "Molecule: Package and get-pip scenarios"
     runs-on:                   ubuntu-latest
     strategy:
       fail-fast:               false
@@ -32,15 +32,49 @@ jobs:
         images:
           - "centos7"
           - "centos8"
-          - "debian9"
           - "debian10"
           - "debian11"
-          - "mint19"
           - "mint20"
-          - "ubuntu1804"
           - "ubuntu2004"
         scenario:
           - "package"
+          - "get-pip"
+    container:
+        image:                 ghcr.io/pandemonium1986/alpine313:nightly
+        volumes:
+          - /var/run/docker.sock:/var/run/docker.sock
+          - ${{ github.workspace }}:/opt/workspace/${{ github.repository }}
+        env:
+          ANSIBLE_FORCE_COLOR: "1"
+          PY_COLORS:           "1"
+          DKR_IMAGE:           ${{ matrix.images }}
+        options:               >-
+          --workdir /opt/workspace/${{ github.repository }}
+    needs:
+      - lint
+    steps:
+      - name:                  "Init: Run checkout@v2"
+        uses:                  actions/checkout@v2
+      - name:                  "Molecule: Create"
+        run:                   molecule create --scenario-name ${{ matrix.scenario }}
+      - name:                  "Molecule: Converge"
+        run:                   molecule converge --scenario-name ${{ matrix.scenario }}
+      - name:                  "Molecule: Idempotence"
+        run:                   molecule idempotence --scenario-name ${{ matrix.scenario }}
+      - name:                  "Molecule: Verify"
+        run:                   molecule verify --scenario-name ${{ matrix.scenario }}
+      - name:                  "Molecule: Destroy"
+        run:                   molecule destroy --scenario-name ${{ matrix.scenario }}
+  molecule-special:
+    name:                      "Molecule: get-pip scenario"
+    runs-on:                   ubuntu-latest
+    strategy:
+      fail-fast:               false
+      matrix:
+        images:
+          - "mint19"
+          - "ubuntu1804"
+        scenario:
           - "get-pip"
     container:
         image:                 ghcr.io/pandemonium1986/alpine313:nightly
