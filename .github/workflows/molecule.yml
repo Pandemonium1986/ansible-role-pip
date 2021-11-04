@@ -24,7 +24,7 @@ jobs:
         with:
           targets:             "./"
   molecule-all:
-    name:                      "Molecule: Package and get-pip scenarios"
+    name:                      "Molecule: All scenarios"
     runs-on:                   ubuntu-latest
     strategy:
       fail-fast:               false

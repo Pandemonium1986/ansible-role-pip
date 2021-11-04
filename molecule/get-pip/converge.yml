@@ -7,7 +7,6 @@
       - ansible
       - ansible-lint
       - molecule[docker]
-      -
   tasks:
     - name:             "Include ansible-role-pip"
       include_role:
