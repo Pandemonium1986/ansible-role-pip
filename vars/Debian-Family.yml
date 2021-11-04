@@ -8,3 +8,4 @@ _pip_mandatory_packages:
 _pip_executable:         pip3
 _package_pip:            python3-pip
 _python_executable:      python3
+_pip_upgrade:            true
