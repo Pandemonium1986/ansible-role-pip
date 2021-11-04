@@ -3,6 +3,11 @@
   hosts:                all
   vars:
     pip_install_method: get-pip
+    pip_packages:
+      - ansible
+      - ansible-lint
+      - molecule[docker]
+      -
   tasks:
     - name:             "Include ansible-role-pip"
       include_role:
