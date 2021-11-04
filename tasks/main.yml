@@ -59,16 +59,6 @@
   become_user:                   root
   when:                          pip_install_method == 'get-pip'
 
-- name:                          Update pip to the latest version
-  ansible.builtin.pip:
-    name:                        "pip"
-    state:                       latest
-    executable:                  "{{ _pip_executable }}"
-    extra_args:                  "--upgrade"
-  become:                        true
-  become_user:                   root
-  when:                          _pip_upgrade | bool
-
 - name:                          Install pip packages as pip_user
   ansible.builtin.pip:
     name:                        "{{ pip_packages }}"
