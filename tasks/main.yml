@@ -24,6 +24,13 @@
     state:                       present
   when:                          pip_install_method == 'package'
 
+- name:                          Update pip install by the package manager
+  ansible.builtin.pip:
+    name:                        "pip"
+    state:                       latest
+    executable:                  "{{ _pip_executable }}"
+  when:                          pip_install_package_update | bool
+
 - name:                          Install pip with the get-pip bootstrap script
   block:
     - name:                      "Ensure {{ _package_pip }} is absent"
