@@ -4,9 +4,9 @@
   vars:
     pip_install_method: package
     pip_packages:
-      - ansible
+      - ansible~=2.9
       - ansible-lint
-      - molecule[docker]
+      - molecule[docker]~=3.0
   tasks:
     - name:             "Include ansible-role-pip"
       include_role:
