@@ -1,5 +1,6 @@
 ---
 _packages:
+  - libffi-dev
   - python3-dev
   - sudo
 _pip_mandatory_packages:
