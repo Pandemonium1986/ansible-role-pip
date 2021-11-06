@@ -29,7 +29,9 @@
     name:                        "pip"
     state:                       latest
     executable:                  "{{ _pip_executable }}"
-  when:                          pip_install_package_update | bool
+  when:
+    - pip_install_package_update | bool
+    - pip_install_method == 'package'
 
 - name:                          Install pip with the get-pip bootstrap script
   block:
