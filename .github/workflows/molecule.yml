@@ -23,15 +23,13 @@ jobs:
         uses:                  ansible/ansible-lint-action@master
         with:
           targets:             "./"
-  molecule-all:
-    name:                      "Molecule: All scenarios"
+  molecule-full:
+    name:                      "Molecule: Full scenarios"
     runs-on:                   ubuntu-latest
     strategy:
       fail-fast:               false
       matrix:
         images:
-          - "centos7"
-          - "centos8"
           - "debian10"
           - "debian11"
           - "mint20"
@@ -65,13 +63,15 @@ jobs:
         run:                   molecule verify --scenario-name ${{ matrix.scenario }}
       - name:                  "Molecule: Destroy"
         run:                   molecule destroy --scenario-name ${{ matrix.scenario }}
-  molecule-special:
+  molecule-get-pip:
     name:                      "Molecule: get-pip scenario"
     runs-on:                   ubuntu-latest
     strategy:
       fail-fast:               false
       matrix:
         images:
+          - "centos7"
+          - "centos8"
           - "mint19"
           - "ubuntu1804"
         scenario:
@@ -102,3 +102,41 @@ jobs:
         run:                   molecule verify --scenario-name ${{ matrix.scenario }}
       - name:                  "Molecule: Destroy"
         run:                   molecule destroy --scenario-name ${{ matrix.scenario }}
+    molecule-package-update:
+      name:                      "Molecule: package-update scenario"
+      runs-on:                     ubuntu-latest
+      strategy:
+        fail-fast:                 false
+        matrix:
+          images:
+            - "centos7"
+            - "centos8"
+            - "debian9"
+          scenario:
+            - "package-update"
+      container:
+          image:                   ghcr.io/pandemonium1986/alpine313:nightly
+          volumes:
+            - /var/run/docker.sock:/var/run/docker.sock
+            - ${{ github.workspace }}:/opt/workspace/${{ github.repository }}
+          env:
+            ANSIBLE_FORCE_COLOR:   "1"
+            PY_COLORS:             "1"
+            DKR_IMAGE:             ${{ matrix.images }}
+          options:                 >-
+            --workdir /opt/workspace/${{ github.repository }}
+      needs:
+        - lint
+      steps:
+        - name:                  "Init: Run checkout@v2"
+          uses:                    actions/checkout@v2
+        - name:                  "Molecule: Create"
+          run:                     molecule create --scenario-name ${{ matrix.scenario }}
+        - name:                  "Molecule: Converge"
+          run:                     molecule converge --scenario-name ${{ matrix.scenario }}
+        - name:                  "Molecule: Idempotence"
+          run:                     molecule idempotence --scenario-name ${{ matrix.scenario }}
+        - name:                  "Molecule: Verify"
+          run:                     molecule verify --scenario-name ${{ matrix.scenario }}
+        - name:                  "Molecule: Destroy"
+          run:                     molecule destroy --scenario-name ${{ matrix.scenario }}
