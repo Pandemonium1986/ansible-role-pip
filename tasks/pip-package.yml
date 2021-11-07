@@ -1,0 +1,16 @@
+---
+- name:                    Ensure you are root for the installation
+  block:
+    - name:                "Ensure {{ _package_pip }} is present"
+      package:
+        name:              "{{ _package_pip }}"
+        state:             present
+    - name:                Update pip install by the package manager
+      ansible.builtin.pip:
+        name:              "pip"
+        state:             latest
+        executable:        "{{ _pip_executable }}"
+      when:
+        - pip_install_package_update | bool
+  become:                  true
+  become_user:             root

@@ -19,53 +19,11 @@
     state:                       present
 
 - name:                          Install pip with the package manager
-  package:
-    name:                        "{{ _package_pip }}"
-    state:                       present
+  ansible.builtin.include_tasks: pip-package.yml
   when:                          pip_install_method == 'package'
 
-- name:                          Update pip install by the package manager
-  ansible.builtin.pip:
-    name:                        "pip"
-    state:                       latest
-    executable:                  "{{ _pip_executable }}"
-  when:
-    - pip_install_package_update | bool
-    - pip_install_method == 'package'
-
 - name:                          Install pip with the get-pip bootstrap script
-  block:
-    - name:                      "Ensure {{ _package_pip }} is absent"
-      package:
-        name:                    "{{ _package_pip }}"
-        state:                   absent
-      when:                      ansible_os_family == 'Debian'
-    - name:                      Ensure .cache directory exists
-      file:
-        path:                    /root/.cache
-        state:                   directory
-        mode:                    0700
-    - name:                      Download get_pip.py
-      get_url:
-        url:                     https://bootstrap.pypa.io/get-pip.py
-        dest:                    /root/.cache/get-pip.py
-        mode:                    0600
-    - name:                      Run get-pip.py
-      command:                   "{{ _python_executable }} get-pip.py"
-      args:
-        chdir:                   /root/.cache
-        creates:                 /root/.cache/pip_install_done
-      register:                  get_pip_result
-    # - debug:
-    #     var:                   get_pip_result
-    - name:                      Ensure pip installation is done
-      file:
-        path:                    /root/.cache/pip_install_done
-        state:                   touch
-        mode:                    0700
-      when:                      get_pip_result.changed
-  become:                        true
-  become_user:                   root
+  ansible.builtin.include_tasks: pip-get-pip.yml
   when:                          pip_install_method == 'get-pip'
 
 - name:                          Install pip packages as pip_user
