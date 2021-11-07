@@ -1,8 +1,9 @@
 ---
 galaxy_info:
   role_name:           pip
+  namespace:           pandemonium1986
   author:              Michael Maffait
-  description:         Install and configure pip, from get-pip.py
+  description:         Install and configure pip, from get-pip.py or pkg manager
   # company:           your company (optional)
   license:             MIT
   min_ansible_version: 2.10
