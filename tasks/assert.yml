@@ -25,3 +25,11 @@
       - pip_user is string
     quiet:                true
     fail_msg:             "Error pip_user MUST be string"
+
+- name:                   Test pip_install_package_update
+  ansible.builtin.assert:
+    that:
+      - pip_install_package_update is defined
+      - pip_install_package_update is boolean
+    quiet:                true
+    fail_msg:             "Error pip_install_package_update MUST be boolean"
