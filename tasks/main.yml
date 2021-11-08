@@ -1,57 +1,36 @@
 ---
-- name:                     Include OS-specific variables (Debian).
-  include_vars:             "{{ ansible_distribution }}-{{ ansible_distribution_version.split('.')[0] }}.yml"
-  when:                     ansible_os_family == 'Debian'
+- name:                          import assert.yml
+  ansible.builtin.import_tasks:  assert.yml
+  run_once:                      true
+  delegate_to:                   localhost
 
-- name:                     Include OS-specific variables (RedHat).
-  include_vars:             "{{ ansible_distribution }}-{{ ansible_distribution_version.split('.')[0] }}.yml"
-  when:                     ansible_os_family == 'RedHat'
+- name:                          Include Family specific variables
+  ansible.builtin.include_vars:  "{{ ansible_os_family }}-Family.yml"
 
-- name:                     Install packages
+- name:                          Include Family specific tasks
+  ansible.builtin.include_tasks: setup-{{ ansible_os_family }}.yml
+
+- name:                          Include fact generation
+  ansible.builtin.import_tasks:  fact.yml
+
+- name:                          Installation of prerequisite packages
   package:
-    name:                   "{{ _packages }}"
-    state:                  present
+    name:                        "{{ _packages }}"
+    state:                       present
 
-- name:                     Set python version (Ubuntu)
-  set_fact:
-    ansible_install_python: python3
-  when:                     (ansible_distribution  == 'Ubuntu') or (ansible_distribution  == 'Linux Mint')
+- name:                          Install pip with the package manager
+  ansible.builtin.import_tasks:  pip-package.yml
+  when:                          pip_install_method == 'package'
 
-- name:                     Set python version (Redhat/Debian)
-  set_fact:
-    ansible_install_python: python
-  when:                     (ansible_distribution == 'Debian') or (ansible_os_family == 'RedHat')
+- name:                          Install pip with the get-pip bootstrap script
+  ansible.builtin.import_tasks:  pip-get-pip.yml
+  when:                          pip_install_method == 'get-pip'
 
-- name:                     Set python version (Centos 8)
-  set_fact:
-    ansible_install_python: python3
-  when:                     (ansible_os_family == 'RedHat') and (ansible_distribution_version.split('.')[0] == "8")
-
-- name:                     Download and install pip
-  block:
-    - name:                 Ensure .cache directory exists
-      file:
-        path:               /root/.cache
-        state:              directory
-        mode:               0700
-    - name:                 Download get_pip.py
-      get_url:
-        url:                https://bootstrap.pypa.io/get-pip.py
-        dest:               /root/.cache/get-pip.py
-        mode:               0600
-    - name:                 Run get-pip.py
-      command:              "{{ ansible_install_python }} get-pip.py"
-      args:
-        chdir:              /root/.cache
-        creates:            /root/.cache/pip_install_done
-      register:             get_pip_result
-    # - debug:
-    #     var:              get_pip_result
-    - name:                 Ensure pip installation is done
-      file:
-        path:               /root/.cache/pip_install_done
-        state:              touch
-        mode:               0700
-      when:                 get_pip_result.changed
-  become:                   true
-  become_user:              root
+- name:                          Install pip packages as pip_user
+  ansible.builtin.pip:
+    name:                        "{{ pip_packages }}"
+    state:                       present
+    executable:                  "{{ _pip_executable }}"
+    extra_args:                  "{{ pip_extra_args | default(omit) }}"
+  become:                        true
+  become_user:                   "{{ pip_user }}"

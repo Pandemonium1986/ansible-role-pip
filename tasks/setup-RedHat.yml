@@ -1,0 +1,5 @@
+---
+- name:                Ensure python3 is install
+  ansible.builtin.yum:
+    name:              python3
+    state:             present
