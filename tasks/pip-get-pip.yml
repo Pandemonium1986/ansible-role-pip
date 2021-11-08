@@ -1,34 +1,34 @@
 ---
-- name:          Ensure you are root for the installation
+- name:                        Ensure you are root for the installation
   block:
-    - name:      "Ensure {{ _package_pip }} is absent"
-      package:
-        name:    "{{ _package_pip }}"
-        state:   absent
-      when:      ansible_os_family == 'Debian'
-    - name:      Ensure .cache directory exists
-      file:
-        path:    /root/.cache
-        state:   directory
-        mode:    0700
-    - name:      Download get_pip.py
-      get_url:
-        url:     https://bootstrap.pypa.io/get-pip.py
-        dest:    /root/.cache/get-pip.py
-        mode:    0600
-    - name:      Run get-pip.py
-      command:   "{{ _python_executable }} get-pip.py"
+    - name:                    "Ensure {{ _package_pip }} is absent"
+      ansible.builtin.package:
+        name:                  "{{ _package_pip }}"
+        state:                 absent
+      when:                    ansible_os_family == 'Debian'
+    - name:                    Ensure .cache directory exists
+      ansible.builtin.file:
+        path:                  /root/.cache
+        state:                 directory
+        mode:                  0700
+    - name:                    Download get_pip.py
+      ansible.builtin.get_url:
+        url:                   https://bootstrap.pypa.io/get-pip.py
+        dest:                  /root/.cache/get-pip.py
+        mode:                  0600
+    - name:                    Run get-pip.py
+      ansible.builtin.command: "{{ _python_executable }} get-pip.py"
       args:
-        chdir:   /root/.cache
-        creates: /root/.cache/pip_install_done
-      register:  get_pip_result
+        chdir:                 /root/.cache
+        creates:               /root/.cache/pip_install_done
+      register:                get_pip_result
     # - debug:
-    #     var:   get_pip_result
-    - name:      Ensure pip installation is done
-      file:
-        path:    /root/.cache/pip_install_done
-        state:   touch
-        mode:    0700
-      when:      get_pip_result.changed
-  become:        true
-  become_user:   root
+    #     var:                 get_pip_result
+    - name:                    Ensure pip installation is done
+      ansible.builtin.file:
+        path:                  /root/.cache/pip_install_done
+        state:                 touch
+        mode:                  0700
+      when:                    get_pip_result.changed
+  become:                      true
+  become_user:                 root

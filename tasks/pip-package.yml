@@ -15,11 +15,11 @@
         - name:                    Update pip install by the package manager
           ansible.builtin.command: "{{ _pip_executable }} install --upgrade pip"
           args:
-            chdir:               /root/.cache
-            creates:             /root/.cache/pip_update_done
+            chdir:                 /root/.cache
+            creates:               /root/.cache/pip_update_done
           register:                pip_update
         - name:                    Ensure pip installation is done
-          file:
+          ansible.builtin.file:
             path:                  /root/.cache/pip_update_done
             state:                 touch
             mode:                  0700
