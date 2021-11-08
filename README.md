@@ -19,10 +19,11 @@ From defaults/main.yml:
 
 ```yaml
 ---
-pip_install_method: "package"   # MUST be package or get-pip
-pip_packages:       [ ]         # The python packages (optional)
-pip_user:           pandemonium # The user who installs the python packages
-pip_extra_args:     "--user"    # The arguments for pip
+pip_install_method: "package"     # MUST be package or get-pip.
+pip_install_package_update: false # In package mode, do you update pip to the latest version.
+pip_packages:       []            # The python packages (optional).
+pip_user:           pandemonium   # The user who installs the python packages.
+pip_extra_args:     "--user"      # The arguments for pip.
 ```
 
 From vars/main.yml (depends of distribution):
@@ -76,14 +77,30 @@ This playbook install pip3 with the OS package manager.
   tasks:
     - name:             "Include ansible-role-pip"
       include_role:
-        name:           "ansible-role-pip"
+        name:           "pandemonium1986.pip"
+```
+
+This playbook install pip3 with the OS package manager and update it with pip (Necessary for the CentOS).
+
+```yaml
+---
+- name:                 Converge
+  hosts:                all
+  vars:
+    pip_install_method: package
+    pip_install_package_update: true
+  tasks:
+    - name:             "Include ansible-role-pip"
+      include_role:
+        name:           "pandemonium1986.pip"
 ```
 
 ## Disclaimer
 
 -   This playbook installs python3 from the OS package manager. Then, all tasks are done with python3 excepting for `CentOS7`  
 -   The latest version of python3 in `debian9` is 3.5 which is currently incompatible with get-pip. Thus, `debian9` only supports package mode.  
--   The version of pip3 installed with package mode in `debian9`, `ubuntu1804` and `mint19` has an idempotency problem. The Playbook correctly installs the pip3 and python3 packages but the github action fails during the idempotency stepTo keep unit tests consistent the choice was made not to test this mode for the OS mentioned above.
+-   The version of pip3 installed with package mode in `debian9`, `ubuntu1804` and `mint19` has an idempotency problem. The Playbook correctly installs the pip3 and python3 packages but the github action fails during the idempotency step. To keep unit tests consistent the choice was made not to test this mode for the OS mentioned above.
+- The pip version supported by the `CentOS` package manager is too old to install recent packages. If you wish, you can update pip with pip once installed with the manager package. This option is not recommended because of a consistency problem between the pip version known by the OS and the real version
 
 ## License
 
