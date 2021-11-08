@@ -111,7 +111,7 @@ jobs:
         images:
           - "centos7"
           - "centos8"
-          - "debian9"
+          # - "debian9"
         scenario:
           - "package-update"
     container:
