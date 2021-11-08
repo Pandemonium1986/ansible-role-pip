@@ -8,6 +8,14 @@
     quiet:                true
     fail_msg:             "Error pip_install_method MUST be one of this value 'package', 'get-pip'"
 
+- name:                   Test pip_install_package_update
+  ansible.builtin.assert:
+    that:
+      - pip_install_package_update is defined
+      - pip_install_package_update is boolean
+    quiet:                true
+    fail_msg:             "Error pip_install_package_update MUST be boolean"
+
 - name:                   Test pip_packages
   ansible.builtin.assert:
     that:
@@ -26,10 +34,10 @@
     quiet:                true
     fail_msg:             "Error pip_user MUST be string"
 
-- name:                   Test pip_install_package_update
+- name:                   Test pip_extra_args
   ansible.builtin.assert:
     that:
-      - pip_install_package_update is defined
-      - pip_install_package_update is boolean
+      - pip_extra_args is defined
+      - pip_extra_args is string
     quiet:                true
-    fail_msg:             "Error pip_install_package_update MUST be boolean"
+    fail_msg:             "Error pip_extra_args MUST be string"
