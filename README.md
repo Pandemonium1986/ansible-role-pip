@@ -97,9 +97,9 @@ This playbook install pip3 with the OS package manager and update it with pip (N
 
 ## Disclaimer
 
--   This playbook installs python3 from the OS package manager. Then, all tasks are done with python3 excepting for `CentOS7`  
--   The latest version of python3 in `debian9` is 3.5 which is currently incompatible with get-pip. Thus, `debian9` only supports package mode.  
--   The version of pip3 installed with package mode in `debian9`, `ubuntu1804` and `mint19` has an idempotency problem. The Playbook correctly installs the pip3 and python3 packages but the github action fails during the idempotency step. To keep unit tests consistent the choice was made not to test this mode for the OS mentioned above.
+- This playbook installs python3 from the OS package manager. Then, all tasks are done with python3 excepting for `CentOS7`  
+- The latest version of python3 in `debian9` is 3.5 which is currently incompatible with get-pip. Thus, `debian9` only supports package mode.  
+- The version of pip3 installed with package mode in `debian9`, `ubuntu1804` and `mint19` has an idempotency problem. The Playbook correctly installs the pip3 and python3 packages but the github action fails during the idempotency step. To keep unit tests consistent the choice was made not to test this mode for the OS mentioned above.
 - The pip version supported by the `CentOS` package manager is too old to install recent packages. If you wish, you can update pip with pip once installed with the manager package. This option is not recommended because of a consistency problem between the pip version known by the OS and the real version
 
 ## License
@@ -108,4 +108,4 @@ This project is licensed under the MIT License - see the [LICENSE](./LICENSE) fi
 
 ## Author Information
 
--   **Michael Maffait** - _Initial work_ - [Pandemonium1986](https://github.com/Pandemonium1986)
+- **Michael Maffait** - _Initial work_ - [Pandemonium1986](https://github.com/Pandemonium1986)
