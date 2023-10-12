@@ -1,12 +1,12 @@
 ---
-- name:                     Prepare
-  hosts:                    all
+- name: Prepare
+  hosts: all
   tasks:
-    - name:                 Create molecule user
+    - name: Create molecule user
       ansible.builtin.user:
-        name:               "pandemonium"
-        generate_ssh_key:   true
-        ssh_key_bits:       4096
-        ssh_key_comment:    fake_key
-        ssh_key_file:       .ssh/id_rsa
-        ssh_key_type:       rsa
+        name: "pandemonium"
+        generate_ssh_key: true
+        ssh_key_bits: 4096
+        ssh_key_comment: fake_key
+        ssh_key_file: .ssh/id_rsa
+        ssh_key_type: rsa

@@ -5,6 +5,6 @@ _packages:
 _pip_mandatory_packages:
   - setuptools
   - wheel
-_pip_executable:         pip3
-_package_pip:            python3-pip
-_python_executable:      python3
+_pip_executable: pip3
+_package_pip: python3-pip
+_python_executable: python3

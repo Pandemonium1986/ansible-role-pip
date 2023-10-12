@@ -1,0 +1,2 @@
+molecule/resources/verify-tests.yml syntax-check[specific]
+molecule/resources/verify-tests.yml no-changed-when

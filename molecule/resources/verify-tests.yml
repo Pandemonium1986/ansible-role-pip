@@ -1,17 +1,17 @@
 ---
-- name:                    Run of each application # noqa 301
+- name: Run of each application
   ansible.builtin.command:
-    cmd:                   "{{ item }}"
-  register:                apps_res
-  ignore_errors:           true
+    cmd: "{{ item }}"
+  register: apps_res
+  ignore_errors: true
   loop:
     - "whoami"
     - "python3 -m pip --version"
-- name:                    Ensure app is installed and running
+- name: Ensure app is installed and running
   ansible.builtin.assert:
     that:
       - item.rc == 0
-    quiet:                 true
-    fail_msg:              "{{ item.cmd }} does not seem to be available"
-    success_msg:           "{{ item.cmd }} is available"
-  loop:                    "{{ apps_res.results }}"
+    quiet: true
+    fail_msg: "{{ item.cmd }} does not seem to be available"
+    success_msg: "{{ item.cmd }} is available"
+  loop: "{{ apps_res.results }}"

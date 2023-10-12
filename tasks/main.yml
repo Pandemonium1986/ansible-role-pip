@@ -1,36 +1,36 @@
 ---
-- name:                          import assert.yml
-  ansible.builtin.import_tasks:  assert.yml
-  run_once:                      true
-  delegate_to:                   localhost
+- name: import assert.yml
+  ansible.builtin.import_tasks: assert.yml
+  run_once: true
+  delegate_to: localhost
 
-- name:                          Include Family specific variables
-  ansible.builtin.include_vars:  "{{ ansible_os_family }}-Family.yml"
+- name: Include Family specific variables
+  ansible.builtin.include_vars: "{{ ansible_os_family }}-Family.yml"
 
-- name:                          Include Family specific tasks
+- name: Include Family specific tasks
   ansible.builtin.include_tasks: setup-{{ ansible_os_family }}.yml
 
-- name:                          Include fact generation
-  ansible.builtin.import_tasks:  fact.yml
+- name: Include fact generation
+  ansible.builtin.import_tasks: fact.yml
 
-- name:                          Installation of prerequisite packages
+- name: Installation of prerequisite packages
   package:
-    name:                        "{{ _packages }}"
-    state:                       present
+    name: "{{ _packages }}"
+    state: present
 
-- name:                          Install pip with the package manager
-  ansible.builtin.import_tasks:  pip-package.yml
-  when:                          pip_install_method == 'package'
+- name: Install pip with the package manager
+  ansible.builtin.import_tasks: pip-package.yml
+  when: pip_install_method == 'package'
 
-- name:                          Install pip with the get-pip bootstrap script
-  ansible.builtin.import_tasks:  pip-get-pip.yml
-  when:                          pip_install_method == 'get-pip'
+- name: Install pip with the get-pip bootstrap script
+  ansible.builtin.import_tasks: pip-get-pip.yml
+  when: pip_install_method == 'get-pip'
 
-- name:                          Install pip packages as pip_user
+- name: Install pip packages as pip_user
   ansible.builtin.pip:
-    name:                        "{{ pip_packages }}"
-    state:                       present
-    executable:                  "{{ _pip_executable }}"
-    extra_args:                  "{{ pip_extra_args | default(omit) }}"
-  become:                        true
-  become_user:                   "{{ pip_user }}"
+    name: "{{ pip_packages }}"
+    state: present
+    executable: "{{ _pip_executable }}"
+    extra_args: "{{ pip_extra_args | default(omit) }}"
+  become: true
+  become_user: "{{ pip_user }}"

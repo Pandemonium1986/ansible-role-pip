@@ -2,7 +2,7 @@
 repository:
   name: "ansible-role-pip"
   description: "Ansible Role - Pip"
-  # homepage:                            https://example.github.io/
+  # homepage: https://example.github.io/
   topics: "automation, pip, ansible-role"
   private: false
   has_issues: true

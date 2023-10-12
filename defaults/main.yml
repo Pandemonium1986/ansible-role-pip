@@ -1,6 +1,6 @@
 ---
-pip_install_method:         "get-pip" # Could be package, get-pip
-pip_install_package_update: false     # No effect if pip_install_method != package
-pip_packages:               []
-pip_user:                   pandemonium
-pip_extra_args:             "--user"
+pip_install_method: "get-pip" # Could be package, get-pip
+pip_install_package_update: false # No effect if pip_install_method != package
+pip_packages: []
+pip_user: pandemonium
+pip_extra_args: "--user"
