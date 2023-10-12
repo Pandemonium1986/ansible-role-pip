@@ -30,7 +30,6 @@ jobs:
       fail-fast: false
       matrix:
         images:
-          - "debian10"
           - "debian11"
           - "mint20"
           - "ubuntu2004"
@@ -70,7 +69,7 @@ jobs:
       fail-fast: false
       matrix:
         images:
-          - "ubuntu1804"
+          - "ubuntu2004"
         scenario:
           - "get-pip"
     container:
