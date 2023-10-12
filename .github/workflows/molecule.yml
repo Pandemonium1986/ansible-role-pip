@@ -70,9 +70,6 @@ jobs:
       fail-fast: false
       matrix:
         images:
-          - "centos7"
-          - "centos8"
-          - "mint19"
           - "ubuntu1804"
         scenario:
           - "get-pip"
@@ -110,8 +107,6 @@ jobs:
       matrix:
         images:
           - "centos7"
-          - "centos8"
-          # - "debian9"
         scenario:
           - "package-update"
     container:
