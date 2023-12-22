@@ -30,9 +30,12 @@ jobs:
       fail-fast: false
       matrix:
         images:
-          - "debian11"
-          - "mint20"
-          - "ubuntu2004"
+          - "centos7"
+          - "debian12"
+          - "ubuntu2204"
+          - "sles15sp3"
+          - "sles15sp5"
+          - "tumbleweed"
         scenario:
           - "package"
           - "get-pip"
@@ -45,6 +48,7 @@ jobs:
         ANSIBLE_FORCE_COLOR: "1"
         PY_COLORS: "1"
         DKR_IMAGE: ${{ matrix.images }}
+        DKR_TAG: "nightly"
       options: >-
         --workdir /opt/workspace/${{ github.repository }}
     needs:
@@ -81,6 +85,7 @@ jobs:
         ANSIBLE_FORCE_COLOR: "1"
         PY_COLORS: "1"
         DKR_IMAGE: ${{ matrix.images }}
+        DKR_TAG: "nightly"
       options: >-
         --workdir /opt/workspace/${{ github.repository }}
     needs:
@@ -117,6 +122,7 @@ jobs:
         ANSIBLE_FORCE_COLOR: "1"
         PY_COLORS: "1"
         DKR_IMAGE: ${{ matrix.images }}
+        DKR_TAG: "nightly"
       options: >-
         --workdir /opt/workspace/${{ github.repository }}
     needs:

@@ -13,3 +13,5 @@ updates:
       - "dependencies"
     assignees:
       - "Pandemonium1986"
+    # commit-message:
+    #   prefix: "dependabot-action"
