@@ -1,0 +1,6 @@
+---
+- name: Refresh repositories and update package python3
+  community.general.zypper:
+    name: python3
+    state: present
+    update_cache: true

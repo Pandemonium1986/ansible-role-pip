@@ -21,9 +21,9 @@ From defaults/main.yml:
 ---
 pip_install_method: "package"     # MUST be package or get-pip.
 pip_install_package_update: false # In package mode, do you update pip to the latest version.
-pip_packages:       []            # The python packages (optional).
-pip_user:           pandemonium   # The user who installs the python packages.
-pip_extra_args:     "--user"      # The arguments for pip.
+pip_packages: []                  # The python packages (optional).
+pip_user: pandemonium             # The user who installs the python packages.
+pip_extra_args: "--user"          # The arguments for pip.
 ```
 
 From vars/main.yml (depends of distribution):
@@ -36,9 +36,9 @@ _packages:
 _pip_mandatory_packages:
   - setuptools
   - wheel
-_pip_executable:         pip3
-_package_pip:            python3-pip
-_python_executable:      python3
+_pip_executable: pip3
+_packages_pip: python3-pip
+_python_executable: python3
 ```
 
 ## Dependencies
@@ -51,8 +51,8 @@ This playbook install pip3 with get-pip bootstrap script, then install for pande
 
 ```yaml
 ---
-- name:                 Converge
-  hosts:                all
+- name: Converge
+  hosts: all
   vars:
     pip_install_method: get-pip
     pip_packages:
@@ -60,39 +60,39 @@ This playbook install pip3 with get-pip bootstrap script, then install for pande
       - ansible-lint
       - molecule[docker]
   tasks:
-    - name:             "Include ansible-role-pip"
+    - name: "Include ansible-role-pip"
       include_role:
-        name:           "pandemonium1986.pip"
+        name: "pandemonium1986.pip"
 ```
 
 This playbook install pip3 with the OS package manager.
 
 ```yaml
 ---
-- name:                 Converge
-  hosts:                all
+- name: Converge
+  hosts: all
   vars:
     pip_install_method: package
     pip_packages: [ ]
   tasks:
-    - name:             "Include ansible-role-pip"
+    - name: "Include ansible-role-pip"
       include_role:
-        name:           "pandemonium1986.pip"
+        name: "pandemonium1986.pip"
 ```
 
 This playbook install pip3 with the OS package manager and update it with pip (Necessary for the CentOS).
 
 ```yaml
 ---
-- name:                 Converge
-  hosts:                all
+- name: Converge
+  hosts: all
   vars:
     pip_install_method: package
     pip_install_package_update: true
   tasks:
-    - name:             "Include ansible-role-pip"
+    - name: "Include ansible-role-pip"
       include_role:
-        name:           "pandemonium1986.pip"
+        name: "pandemonium1986.pip"
 ```
 
 ## Disclaimer

@@ -6,7 +6,8 @@
   ignore_errors: true
   loop:
     - "whoami"
-    - "python3 -m pip --version"
+    - "pipx ensurepath"
+    - "ansible --version"
 - name: Ensure app is installed and running
   ansible.builtin.assert:
     that:

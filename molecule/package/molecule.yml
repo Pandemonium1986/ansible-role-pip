@@ -1,13 +1,9 @@
 ---
 dependency:
   name: galaxy
-  enabled: false
+  enabled: true
 driver:
   name: docker
-lint: |
-  set -e
-  yamllint .
-  ansible-lint
 platforms:
   - name: molecule-${DKR_IMAGE:-debian12}
     hostname: ${DKR_IMAGE:-debian12}
@@ -24,9 +20,6 @@ provisioner:
   playbooks:
     verify: ../resources/verify.yml
     prepare: ../resources/prepare.yml
-  lint: |
-    set -e
-    ansible-lint
   config_options:
     defaults:
       stdout_callback: yaml

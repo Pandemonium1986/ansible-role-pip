@@ -6,8 +6,6 @@
     - name: Run pip as a non-privileged user
       become: true
       become_user: pandemonium
-      ansible.builtin.import_tasks: verify-tests.yml
-    - name: Run pip as a privileged user
-      become: true
-      become_user: root
+      become_method: su
+      become_flags: "-"
       ansible.builtin.import_tasks: verify-tests.yml
