@@ -30,7 +30,6 @@ jobs:
       fail-fast: false
       matrix:
         images:
-          - "centos7"
           - "debian12"
           - "ubuntu2204"
           - "sles15sp3"
