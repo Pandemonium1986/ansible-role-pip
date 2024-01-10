@@ -1,11 +1,14 @@
 ---
 - name: Ensure you are root for the installation
+  become: true
+  become_user: root
   block:
-    - name: "Ensure {{ _package_pip }} is absent"
+    - name: "Ensure _packages_pip is absent"
       ansible.builtin.package:
-        name: "{{ _package_pip }}"
+        name: "{{ _packages_pip }}"
         state: absent
-      when: ansible_os_family == 'Debian'
+      when:
+        - _global_os_family == 'debian' or _global_os_family == 'suse'
     - name: Ensure .cache directory exists
       ansible.builtin.file:
         path: /root/.cache
@@ -13,7 +16,7 @@
         mode: 0700
     - name: Download get_pip.py
       ansible.builtin.get_url:
-        url: https://bootstrap.pypa.io/get-pip.py
+        url: "https://bootstrap.pypa.io/pip/{{ _get_pip_version | default('') }}/get-pip.py"
         dest: /root/.cache/get-pip.py
         mode: 0600
     - name: Run get-pip.py
@@ -23,12 +26,10 @@
         creates: /root/.cache/pip_install_done
       register: get_pip_result
     # - debug:
-    #     var:                 get_pip_result
-    - name: Ensure pip installation is done
+    #     var: get_pip_result
+    - name: Ensure pip installation is done # noqa: no-handler
       ansible.builtin.file:
         path: /root/.cache/pip_install_done
         state: touch
         mode: 0700
       when: get_pip_result.changed
-  become: true
-  become_user: root

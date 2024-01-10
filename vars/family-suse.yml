@@ -1,0 +1,10 @@
+---
+_packages:
+  - python3-devel
+  - sudo
+_packages_pip:
+  - python3-pip
+  - python311-pipx
+_pip_executable: pipx
+_pip_mandatory_packages: []
+_python_executable: python3

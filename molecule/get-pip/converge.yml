@@ -2,11 +2,10 @@
 - name: Converge
   hosts: all
   vars:
-    pip_install_method: get-pip
     pip_packages:
-      - ansible~=2.9.0
-      - ansible-lint
-      - molecule[docker]~=3.0.0
+      - ansible-core
+      - pipx
+    pip_extra_args: "--user"
   tasks:
     - name: "Include ansible-role-pip"
       ansible.builtin.include_role:

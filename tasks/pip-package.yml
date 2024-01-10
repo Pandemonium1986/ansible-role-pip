@@ -1,11 +1,15 @@
 ---
 - name: Ensure you are root for the installation
+  become: true
+  become_user: root
   block:
-    - name: "Ensure {{ _package_pip }} is present"
-      package:
-        name: "{{ _package_pip }}"
+    - name: "Ensure _packages_pip is present"
+      ansible.builtin.package:
+        name: "{{ _packages_pip }}"
         state: present
     - name: Update pip install by the package manager
+      when:
+        - pip_install_package_update | bool
       block:
         - name: Ensure .cache directory exists
           ansible.builtin.file:
@@ -18,13 +22,9 @@
             chdir: /root/.cache
             creates: /root/.cache/pip_update_done
           register: pip_update
-        - name: Ensure pip installation is done
+        - name: Ensure pip installation is done # noqa: no-handler
           ansible.builtin.file:
             path: /root/.cache/pip_update_done
             state: touch
             mode: 0700
           when: pip_update.changed
-      when:
-        - pip_install_package_update | bool
-  become: true
-  become_user: root

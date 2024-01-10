@@ -1,13 +1,4 @@
 ---
-- name: Test pip_install_method
-  ansible.builtin.assert:
-    that:
-      - pip_install_method is defined
-      - pip_install_method is string
-      - (pip_install_method in [ 'package', 'get-pip' ])
-    quiet: true
-    fail_msg: "Error pip_install_method MUST be one of this value 'package', 'get-pip'"
-
 - name: Test pip_install_package_update
   ansible.builtin.assert:
     that:

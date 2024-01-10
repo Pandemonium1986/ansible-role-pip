@@ -1,36 +1,76 @@
 ---
-- name: import assert.yml
+- name: Import assert.yml
   ansible.builtin.import_tasks: assert.yml
   run_once: true
   delegate_to: localhost
 
-- name: Include Family specific variables
-  ansible.builtin.include_vars: "{{ ansible_os_family }}-Family.yml"
+- name: Include fact-global
+  ansible.builtin.import_tasks: fact-global.yml
 
-- name: Include Family specific tasks
-  ansible.builtin.include_tasks: setup-{{ ansible_os_family }}.yml
+- name: Include family specific variables
+  ansible.builtin.include_vars: "family-{{ _global_os_family }}.yml"
 
-- name: Include fact generation
-  ansible.builtin.import_tasks: fact.yml
+- name: Include distro variables
+  ansible.builtin.include_vars: "distro-{{ _global_distribution }}-{{ _global_distribution_version }}.yml" # yamllint disable-line rule:line-length
+
+- name: Include distro tasks
+  ansible.builtin.include_tasks: setup-{{ _global_distribution }}.yml
+
+- name: Include fact-role
+  ansible.builtin.import_tasks: fact-role.yml
 
 - name: Installation of prerequisite packages
-  package:
+  ansible.builtin.package:
     name: "{{ _packages }}"
     state: present
 
 - name: Install pip with the package manager
   ansible.builtin.import_tasks: pip-package.yml
-  when: pip_install_method == 'package'
+  when: _pip_install_method == 'package'
 
 - name: Install pip with the get-pip bootstrap script
   ansible.builtin.import_tasks: pip-get-pip.yml
-  when: pip_install_method == 'get-pip'
+  when: _pip_install_method == 'get-pip'
 
-- name: Install pip packages as pip_user
+- name: Install pip packages with pip as pip_user
   ansible.builtin.pip:
     name: "{{ pip_packages }}"
     state: present
-    executable: "{{ _pip_executable }}"
+    executable: "{{ pip_path_executable }}"
     extra_args: "{{ pip_extra_args | default(omit) }}"
   become: true
   become_user: "{{ pip_user }}"
+  when: _pip_executable == "pip3"
+
+- name: Install pip packages with pipx as pip_user
+  community.general.pipx:
+    name: "{{ item }}"
+    state: install
+    executable: /usr/bin/pipx
+  become: true
+  become_user: "{{ pip_user }}"
+  loop: "{{ pip_packages }}"
+  when: _pip_executable == "pipx"
+
+- name: Generate pipx ensurepath
+  become: true
+  become_user: "{{ pip_user }}"
+  when: _pip_executable == "pipx"
+  block:
+    - name: Ensure .cache directory exists
+      ansible.builtin.file:
+        path: "/home/{{ pip_user }}/.cache"
+        state: directory
+        mode: 0700
+    - name: Run pipx ensurepath
+      ansible.builtin.command: "pipx ensurepath"
+      args:
+        chdir: "/home/{{ pip_user }}/.cache"
+        creates: "/home/{{ pip_user }}/.cache/pipx_ensurepath_done"
+      register: pipx_ensurepath
+    - name: Ensure pipx ensurepath is done # noqa: no-handler
+      ansible.builtin.file:
+        path: "/home/{{ pip_user }}/.cache/pipx_ensurepath_done"
+        state: touch
+        mode: 0700
+      when: pipx_ensurepath.changed

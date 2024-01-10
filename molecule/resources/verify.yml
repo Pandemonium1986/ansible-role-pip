@@ -3,11 +3,9 @@
   hosts: all
   gather_facts: true
   tasks:
-    - name: Run pip as a non-privileged user
+    - name: Run pip as a non-privileged user # noqa schema
       become: true
       become_user: pandemonium
-      ansible.builtin.import_tasks: verify-tests.yml
-    - name: Run pip as a privileged user
-      become: true
-      become_user: root
+      become_method: su
+      become_flags: "-"
       ansible.builtin.import_tasks: verify-tests.yml

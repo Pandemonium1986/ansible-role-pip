@@ -1,17 +1,13 @@
 ---
 dependency:
   name: galaxy
-  enabled: false
+  enabled: true
 driver:
   name: docker
-lint: |
-  set -e
-  yamllint .
-  ansible-lint
 platforms:
-  - name: molecule-${DKR_IMAGE:-debian11}
-    hostname: ${DKR_IMAGE:-debian11}
-    image: ghcr.io/pandemonium1986/${DKR_IMAGE:-debian11}:nightly
+  - name: molecule-${DKR_IMAGE:-debian12}
+    hostname: ${DKR_IMAGE:-debian12}
+    image: ghcr.io/pandemonium1986/${DKR_IMAGE:-debian12}:${DKR_TAG:-nightly}
     pull: true
     pre_build_image: true
     tty: true
@@ -24,9 +20,6 @@ provisioner:
   playbooks:
     verify: ../resources/verify.yml
     prepare: ../resources/prepare.yml
-  lint: |
-    set -e
-    ansible-lint
   config_options:
     defaults:
       stdout_callback: yaml

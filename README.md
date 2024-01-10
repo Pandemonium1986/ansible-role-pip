@@ -1,17 +1,27 @@
 # Ansible role : Pip
 
-![Ansible Role](https://img.shields.io/ansible/role/39723?logo=ansible)
-[![Molecule](https://github.com/Pandemonium1986/ansible-role-pip/actions/workflows/molecule.yml/badge.svg?branch=master)](https://github.com/Pandemonium1986/ansible-role-pip/actions/workflows/molecule.yml)
+[![Ansible Role](https://img.shields.io/ansible/role/d/pandemonium1986/init?logo=Ansible&color=blue)](https://galaxy.ansible.com/ui/standalone/roles/pandemonium1986/pip/)
+[![Molecule](https://github.com/Pandemonium1986/ansible-role-init/actions/workflows/molecule.yml/badge.svg)](https://github.com/Pandemonium1986/ansible-role-pip/actions/workflows/molecule.yml)
 ![GitHub release](https://img.shields.io/github/release/Pandemonium1986/ansible-role-pip.svg?logo=github)
 ![Github license](https://img.shields.io/github/license/Pandemonium1986/ansible-role-pip.svg?logo=github)
-![Ansible Quality Score](https://img.shields.io/ansible/quality/39723?logo=ansible)
 
-Install pip3, from the os package manager or from the get-pip bootstrap script. You can also install, if needed, python packages with pip3.  
+Depending on your operating system, install pip or pipx from the OS package manager or from get-pip. Then install python applications from pip or pipx.
+
+## Pip/Pix installation methods
+
+| OS         | Method  | Pip or Pipx |
+| :--------- | :------ | :---------- |
+| centos7    | get-pip | pip         |
+| debian12   | package | pipx        |
+| ubuntu2204 | package | pipx        |
+| sles15sp3  | get-pip | pip         |
+| sles15sp5  | package | pipx        |
+| tumbleweed | package | pipx        |
 
 ## Requirements
 
-This role is self contained and install pip3 for debian, ubuntu, linux mint, centos.  
-However, it assumes that managed node is accessible with ssh and the locales are in UTF8. See [docker-debian11](https://github.com/Pandemonium1986/docker-debian11) for a example.  
+This role is self contained and install pip3 or pipx for debian, ubuntu, opensuse, sles, centos.  
+However, it assumes that managed node is accessible with ssh and the locales are in UTF8. See [docker-debian11](https://github.com/Pandemonium1986/docker-debian11) for a example.
 
 ## Role Variables
 
@@ -19,26 +29,27 @@ From defaults/main.yml:
 
 ```yaml
 ---
-pip_install_method: "package"     # MUST be package or get-pip.
 pip_install_package_update: false # In package mode, do you update pip to the latest version.
-pip_packages:       []            # The python packages (optional).
-pip_user:           pandemonium   # The user who installs the python packages.
-pip_extra_args:     "--user"      # The arguments for pip.
+pip_packages: [] # The python packages (optional).
+pip_user: pandemonium # The user who installs the python packages.
+pip_extra_args: "--user" # The arguments for pip (when method is get-pip).
 ```
 
-From vars/main.yml (depends of distribution):
+From vars/[distro|familly]-[os_familly]-[os_version].yml (depends of distribution):
 
 ```yaml
 ---
 _packages:
-  - python3-devel
+  - libffi-dev
+  - python3-dev
+  - python3-venv
   - sudo
-_pip_mandatory_packages:
-  - setuptools
-  - wheel
-_pip_executable:         pip3
-_package_pip:            python3-pip
-_python_executable:      python3
+_packages_pip:
+  - python3-pip
+  - pipx
+_pip_executable: pipx
+_pip_mandatory_packages: []
+_python_executable: python3
 ```
 
 ## Dependencies
@@ -47,60 +58,40 @@ None.
 
 ## Example Playbook
 
-This playbook install pip3 with get-pip bootstrap script, then install for pandemonium user the ansible, ansible-lint and molecule packages with pip3.
-
 ```yaml
 ---
-- name:                 Converge
-  hosts:                all
+- name: Converge
+  hosts: all
   vars:
-    pip_install_method: get-pip
+    pip_user: pandemonium
     pip_packages:
-      - ansible
+      - ansible-core
       - ansible-lint
-      - molecule[docker]
+      - molecule
+      - molecule-plugins[docker]
   tasks:
-    - name:             "Include ansible-role-pip"
+    - name: "Include ansible-role-pip"
       include_role:
-        name:           "pandemonium1986.pip"
+        name: "pandemonium1986.pip"
 ```
-
-This playbook install pip3 with the OS package manager.
 
 ```yaml
 ---
-- name:                 Converge
-  hosts:                all
-  vars:
-    pip_install_method: package
-    pip_packages: [ ]
-  tasks:
-    - name:             "Include ansible-role-pip"
-      include_role:
-        name:           "pandemonium1986.pip"
-```
-
-This playbook install pip3 with the OS package manager and update it with pip (Necessary for the CentOS).
-
-```yaml
----
-- name:                 Converge
-  hosts:                all
+- name: Converge
+  hosts: all
   vars:
     pip_install_method: package
     pip_install_package_update: true
   tasks:
-    - name:             "Include ansible-role-pip"
+    - name: "Include ansible-role-pip"
       include_role:
-        name:           "pandemonium1986.pip"
+        name: "pandemonium1986.pip"
 ```
 
 ## Disclaimer
 
-- This playbook installs python3 from the OS package manager. Then, all tasks are done with python3 excepting for `CentOS7`  
-- The latest version of python3 in `debian9` is 3.5 which is currently incompatible with get-pip. Thus, `debian9` only supports package mode.  
-- The version of pip3 installed with package mode in `debian9`, `ubuntu1804` and `mint19` has an idempotency problem. The Playbook correctly installs the pip3 and python3 packages but the github action fails during the idempotency step. To keep unit tests consistent the choice was made not to test this mode for the OS mentioned above.
-- The pip version supported by the `CentOS` package manager is too old to install recent packages. If you wish, you can update pip with pip once installed with the manager package. This option is not recommended because of a consistency problem between the pip version known by the OS and the real version
+- This playbook installs python3 from the OS package manager. Then, all tasks are done with python3 excepting for `CentOS7`
+- The Pipx package is not available for centos7 and sles15sp3. Pip is installed via get-pip for both bones. But there's nothing to stop you installing pipx and then install python applications AFTER the playbook has been run.
 
 ## License
 

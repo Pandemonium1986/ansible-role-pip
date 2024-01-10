@@ -1,0 +1,35 @@
+---
+- name: Configure pip path with package installation
+  ansible.builtin.set_fact:
+    pip_path_executable: "/usr/bin/{{ _pip_executable }}"
+  when: _pip_install_method == 'package'
+
+- name: Configure pip path with get-pip installation
+  ansible.builtin.set_fact:
+    pip_path_executable: "/usr/local/bin/{{ _pip_executable }}"
+  when: _pip_install_method == 'get-pip'
+
+- name: Generate pip_packages list
+  ansible.builtin.set_fact:
+    pip_packages: "{{ _pip_mandatory_packages + pip_packages }}"
+
+- name: Force python interpreter to python3
+  ansible.builtin.set_fact:
+    ansible_python_interpreter: "{{ _python_executable }}"
+
+- name: Force python interpreter to python
+  ansible.builtin.set_fact:
+    ansible_python_interpreter: python
+  when:
+    - _global_distribution == 'centos'
+    - ansible_distribution_version.split('.')[0] == '7'
+
+- name: Force get-pip for openSUSE 15.3
+  ansible.builtin.set_fact:
+    _pip_install_method: "get-pip"
+    _pip_executable: "pip3"
+    pip_path_executable: "/usr/bin/pip3"
+  when:
+    - _global_distribution == 'suse'
+    - _global_distribution_version == '15'
+    - ansible_distribution_version == '15.3'
