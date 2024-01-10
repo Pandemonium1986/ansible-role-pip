@@ -75,19 +75,6 @@ None.
         name: "pandemonium1986.pip"
 ```
 
-```yaml
----
-- name: Converge
-  hosts: all
-  vars:
-    pip_install_method: package
-    pip_install_package_update: true
-  tasks:
-    - name: "Include ansible-role-pip"
-      include_role:
-        name: "pandemonium1986.pip"
-```
-
 ## Disclaimer
 
 - This playbook installs python3 from the OS package manager. Then, all tasks are done with python3 excepting for `CentOS7`
