@@ -11,7 +11,7 @@
 
 - name: Generate pip_packages list
   ansible.builtin.set_fact:
-    pip_packages: "{{ _pip_mandatory_packages + pip_packages  }}"
+    pip_packages: "{{ _pip_mandatory_packages + pip_packages }}"
 
 - name: Force python interpreter to python3
   ansible.builtin.set_fact:

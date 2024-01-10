@@ -22,7 +22,7 @@
             chdir: /root/.cache
             creates: /root/.cache/pip_update_done
           register: pip_update
-        - name: Ensure pip installation is done
+        - name: Ensure pip installation is done # noqa: no-handler
           ansible.builtin.file:
             path: /root/.cache/pip_update_done
             state: touch

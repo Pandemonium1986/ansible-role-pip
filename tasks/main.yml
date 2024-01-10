@@ -20,7 +20,7 @@
   ansible.builtin.import_tasks: fact-role.yml
 
 - name: Installation of prerequisite packages
-  package:
+  ansible.builtin.package:
     name: "{{ _packages }}"
     state: present
 
@@ -68,7 +68,7 @@
         chdir: "/home/{{ pip_user }}/.cache"
         creates: "/home/{{ pip_user }}/.cache/pipx_ensurepath_done"
       register: pipx_ensurepath
-    - name: Ensure pipx ensurepath is done
+    - name: Ensure pipx ensurepath is done # noqa: no-handler
       ansible.builtin.file:
         path: "/home/{{ pip_user }}/.cache/pipx_ensurepath_done"
         state: touch

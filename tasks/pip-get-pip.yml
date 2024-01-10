@@ -26,7 +26,7 @@
       register: get_pip_result
     # - debug:
     #     var: get_pip_result
-    - name: Ensure pip installation is done
+    - name: Ensure pip installation is done # noqa: no-handler
       ansible.builtin.file:
         path: /root/.cache/pip_install_done
         state: touch
