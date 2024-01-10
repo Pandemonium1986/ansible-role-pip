@@ -19,5 +19,5 @@ galaxy_info:
       versions: ["15SP3", "15SP5"]
     - name: Ubuntu
       versions: ["jammy"]
-  galaxy_tags: ["pip", "system", "common"]
+  galaxy_tags: ["pip", "pipx", "python"]
 dependencies: []
