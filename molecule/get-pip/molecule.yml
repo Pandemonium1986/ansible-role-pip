@@ -12,8 +12,9 @@ platforms:
     pre_build_image: true
     tty: true
     override_command: false
-    volumes:
-      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    tmpfs:
+      - /run
+      - /tmp
     privileged: true
 provisioner:
   name: ansible

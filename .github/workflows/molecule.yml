@@ -15,7 +15,7 @@ on:
 jobs:
   lint:
     name: "Ansible: Lint"
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - name: "Init: Run checkout"
         uses: actions/checkout@v4
@@ -25,7 +25,7 @@ jobs:
           args: "--exclude .github .pre-commit-config.yaml"
   molecule-package:
     name: "Molecule: package scenario"
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
@@ -45,7 +45,7 @@ jobs:
         ANSIBLE_FORCE_COLOR: "1"
         PY_COLORS: "1"
         DKR_IMAGE: ${{ matrix.images }}
-        DKR_TAG: "nightly"
+        DKR_TAG: "main"
       options: >-
         --workdir /opt/workspace/${{ github.repository }}
     needs:
@@ -65,7 +65,7 @@ jobs:
         run: molecule destroy --scenario-name ${{ matrix.scenario }}
   molecule-get-pip:
     name: "Molecule: get-pip scenario"
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
@@ -83,7 +83,7 @@ jobs:
         ANSIBLE_FORCE_COLOR: "1"
         PY_COLORS: "1"
         DKR_IMAGE: ${{ matrix.images }}
-        DKR_TAG: "nightly"
+        DKR_TAG: "main"
       options: >-
         --workdir /opt/workspace/${{ github.repository }}
     needs:
