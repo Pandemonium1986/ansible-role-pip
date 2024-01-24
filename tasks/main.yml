@@ -1,9 +1,4 @@
 ---
-- name: Import assert.yml
-  ansible.builtin.import_tasks: assert.yml
-  run_once: true
-  delegate_to: localhost
-
 - name: Include fact-global
   ansible.builtin.import_tasks: fact-global.yml
 
