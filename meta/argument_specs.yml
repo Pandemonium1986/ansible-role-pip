@@ -1,9 +1,13 @@
 ---
 argument_specs:
   main:
-    short_description: Main entry point for the pip role
+    short_description: Install and configure pip, from get-pip.py or pkg manager.
     description:
-      - This is the main entrypoint for the pip role.
+      - Install and configure pip, using get-pip.py or the pkg manager.
+      - There is only one entry point, which is main.
+      - You can customize the pip installation by choosing the pip user and the additional packages to be installed.
+      - If pip is installed by the package manager, you can choose to update it with pip via pip_install_package_update.
+      - If required, you can add additional arguments to the pip command.
     version_added: 4.0.0
     author:
       - Michael Maffait
