@@ -4,6 +4,9 @@ _packages:
   - sudo
 _packages_pip:
   - python3-pip
+  - python311
+  - python311-devel
+  - python311-pip
   - python311-pipx
 _pip_executable: pipx
 _pip_mandatory_packages: []
